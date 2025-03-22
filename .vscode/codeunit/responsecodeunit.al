@@ -13,3 +13,13 @@
         WorkflowResponseHandling.AddResponseToLibrary(MyWorkflowResponseCode(), Database::"Purchase Header", 'Send Notification of sales', 'Group 0')
     end;
 }*/
+/* codeunit 50125 Publication
+{
+    trigger OnRun()
+    begin
+
+    end;
+
+    var
+        myInt: Integer;
+} */
