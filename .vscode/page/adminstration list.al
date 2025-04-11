@@ -37,14 +37,49 @@ page 50138 "Administration list"
     {
         area(Processing)
         {
-            action(ActionName)
+            group(admin)
             {
+                action(Send)
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Send';
+                    Image = SendApprovalRequest;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    Enabled = NOT OpenApprovalEntriesExist;
+                    trigger OnAction()
+                    var
+                        MyPublisher: Codeunit MyPublishers;
+                        RecRef: RecordRef;
+                    begin
+                        if MyPublisher.CheckInvoiceApprovalsWorkflowEnabled(RecRef) then
+                            MyPublisher.OnSendWorkflowForApproval(RecRef);
+                    end;
+                }
+                action(Cancel)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Cancel';
+                    Image = CancelApprovalRequest;
+                    Promoted = true;
+                    Enabled = NOT OpenCancelApprovalEntriesExist;
+                    PromotedCategory = Process;
+                    trigger OnAction()
+                    var
+                        MyPublisher: Codeunit MyPublishers;
+                        RecRef: RecordRef;
+                    begin
+                        MyPublisher.OnCancelWorkflowForApproval(RecRef);
 
-                trigger OnAction()
-                begin
+                    end;
+                }
 
-                end;
             }
         }
     }
+    var
+        OpenApprovalEntriesExistCurrUser, OpenApprovalEntriesExist, OpenCancelApprovalEntriesExist,
+       HasApprovalsEntries : Boolean;
+
+        ApprovalsMgmt: Codeunit "Approvals Mgmt.";
 }
